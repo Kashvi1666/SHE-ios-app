@@ -1,7 +1,4 @@
-// created by Kashvi on 8/14/23.
-
 import SwiftUI
-import Foundation
 
 struct FirstView: View {
     var body: some View {
@@ -12,7 +9,7 @@ struct FirstView: View {
                     Text("S.H.E")
                         .multilineTextAlignment(.center)
                         .font(.largeTitle)
-                        .foregroundColor(Color.white)
+                        .foregroundColor(.white)
                         .offset(x: 0.0, y: -60.0)
                         .dynamicTypeSize(.xxxLarge)
                         .shadow(color: Color.black.opacity(0.8), radius: 8, x: 2, y: 2)
@@ -22,12 +19,19 @@ struct FirstView: View {
                         .multilineTextAlignment(.center)
                         .dynamicTypeSize(.xLarge)
                         .offset(x: 0.0, y: -20.0)
-                        .foregroundColor(Color.white)
+                        .foregroundColor(.white)
 
-                    NavigationLink(destination: AvatarView()) { // 
+                    NavigationLink(destination: AvatarView()) {
                         Text("click here")
-                            .foregroundColor(Color.white)
-                    }.padding()
+                            .foregroundColor(.white)
+                            .padding()
+                            .background(Color.black)
+                            .clipShape(Capsule())
+                            .overlay(
+                                Capsule()
+                                    .stroke(Color.white, lineWidth: 2)
+                            )
+                    }
                 }
             }
         }
@@ -39,5 +43,3 @@ struct FirstView_Previews: PreviewProvider {
         FirstView()
     }
 }
-
-
