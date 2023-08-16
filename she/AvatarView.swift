@@ -4,37 +4,27 @@ import Combine
 struct AvatarView: View {
     @EnvironmentObject var avatarCustomizationManager: AvatarCustomizationManager
 
+ 
     var body: some View {
         ZStack {
             Image("background").ignoresSafeArea()
             VStack {
-                Text("create your avatar")
+                Text("Create Your Avatar")
                     .font(.title)
                     .foregroundColor(.white)
-                    .offset(x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: /*@START_MENU_TOKEN@*/-45.0/*@END_MENU_TOKEN@*/)
-                //eyes button
-                Button(action: {
+                
+                ColorButton(title: "Eyes", color: .black, action: {
                     avatarCustomizationManager.showEyeColorPicker.toggle()
-                }) {
-                    Text("eyes")
-                }
-                    .padding()
-                    .popover(isPresented: $avatarCustomizationManager.showEyeColorPicker){
-                        ColorPicker("pick eye color", selection: $avatarCustomizationManager.selectedEyeColor)
-                        .padding()
-                }
-                //skin button
-                Button(action: {
+                })
+                .padding()
+                .offset(x: -45.0, y: 10)
+                
+                ColorButton(title: "Skin", color: .black, action: {
                     avatarCustomizationManager.showSkinColorPicker.toggle()
-                }) {
-                    Text("skin")
-                }
-                    .padding()
-                    .popover(isPresented: $avatarCustomizationManager.showSkinColorPicker) {
-                        ColorPicker("pick skin color", selection: $avatarCustomizationManager.selectedSkinColor)
-                    .padding()
-                }
-                //display
+                })
+                .padding()
+                .offset(x: 45.0, y: -80.0)
+                
                 AvatarPreview(
                     skinColor: avatarCustomizationManager.skinColor,
                     eyeColor: avatarCustomizationManager.eyeColor
@@ -43,6 +33,64 @@ struct AvatarView: View {
             }
         }
         .navigationBarHidden(true)
+        .popover(isPresented: $avatarCustomizationManager.showEyeColorPicker) {
+            ColorPickerPopover(colors: [.blue, .green, .brown, .gray], selectedColor: $avatarCustomizationManager.selectedEyeColor)
+                .onDisappear {
+                    avatarCustomizationManager.applyColors()
+                }
+        }
+        .popover(isPresented: $avatarCustomizationManager.showSkinColorPicker) {
+            ColorPickerPopover(colors: [.pink, .purple, .red, .orange], selectedColor: $avatarCustomizationManager.selectedSkinColor)
+                .onDisappear {
+                    avatarCustomizationManager.applyColors()
+                }
+        }
+    }
+}
+
+struct ColorPickerPopover: View {
+    let colors: [Color]
+    @Binding var selectedColor: Color
+    var body: some View {
+        VStack {
+            HStack(spacing: 10) {
+                ForEach(colors, id: \.self) { color in
+                    Button(action: {
+                        self.selectedColor = color
+                    }) {
+                        Circle()
+                            .fill(color)
+                            .frame(width: 30, height: 30)
+                    }
+                }
+            }
+            .padding()
+        }
+        background(Color.black)
+        .cornerRadius(10)
+        .padding()
+    }
+}
+
+
+struct ColorButton: View {
+    let title: String
+    let color: Color
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            Text(title)
+                .font(.headline)
+                .foregroundColor(.white)
+                .padding()
+                .background(color)
+                .clipShape(Capsule())
+                .overlay(
+                    Capsule()
+                        .stroke(Color.white, lineWidth: 2)
+                )
+        }
     }
 }
 
@@ -55,8 +103,12 @@ class AvatarCustomizationManager: ObservableObject {
     
     @Published var showEyeColorPicker = false
     @Published var showSkinColorPicker = false
+    
+    func applyColors() {
+        skinColor = selectedSkinColor
+        eyeColor = selectedEyeColor
+    }
 }
-
 struct AvatarPreview: View {
     let skinColor: Color
     let eyeColor: Color
