@@ -1,21 +1,13 @@
-//
-//  ContentView.swift
-//  she
-//
-//  Created by Kashvi Swami on 8/15/23.
-//
+// created by Kashvi on 8/14/23.
 
 import SwiftUI
+import Foundation
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("hi")
+        VStack{
+            
         }
-        .padding()
     }
 }
 

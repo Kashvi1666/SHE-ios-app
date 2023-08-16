@@ -14,6 +14,14 @@
 		80EC47C12A8BE6FB00CFCCA1 /* sheTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EC47C02A8BE6FB00CFCCA1 /* sheTests.swift */; };
 		80EC47CB2A8BE6FB00CFCCA1 /* sheUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EC47CA2A8BE6FB00CFCCA1 /* sheUITests.swift */; };
 		80EC47CD2A8BE6FB00CFCCA1 /* sheUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EC47CC2A8BE6FB00CFCCA1 /* sheUITestsLaunchTests.swift */; };
+		80EC47DC2A8C134400CFCCA1 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EC47DB2A8C134400CFCCA1 /* GradientView.swift */; };
+		80EC47DE2A8C1C5500CFCCA1 /* RitualView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EC47DD2A8C1C5500CFCCA1 /* RitualView.swift */; };
+		80EC47E02A8C1C6200CFCCA1 /* ReflectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EC47DF2A8C1C6200CFCCA1 /* ReflectView.swift */; };
+		80EC47E22A8C1C7D00CFCCA1 /* RadarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EC47E12A8C1C7D00CFCCA1 /* RadarView.swift */; };
+		80EC47E42A8C1C8A00CFCCA1 /* RoadmapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EC47E32A8C1C8A00CFCCA1 /* RoadmapView.swift */; };
+		80EC47E82A8D291400CFCCA1 /* FirstView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EC47E72A8D291400CFCCA1 /* FirstView.swift */; };
+		80EC47EA2A8D29B400CFCCA1 /* AvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EC47E92A8D29B400CFCCA1 /* AvatarView.swift */; };
+		80EC47EC2A8D29BF00CFCCA1 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EC47EB2A8D29BF00CFCCA1 /* GameView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +52,14 @@
 		80EC47C62A8BE6FB00CFCCA1 /* sheUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = sheUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		80EC47CA2A8BE6FB00CFCCA1 /* sheUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sheUITests.swift; sourceTree = "<group>"; };
 		80EC47CC2A8BE6FB00CFCCA1 /* sheUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sheUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		80EC47DB2A8C134400CFCCA1 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
+		80EC47DD2A8C1C5500CFCCA1 /* RitualView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RitualView.swift; sourceTree = "<group>"; };
+		80EC47DF2A8C1C6200CFCCA1 /* ReflectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReflectView.swift; sourceTree = "<group>"; };
+		80EC47E12A8C1C7D00CFCCA1 /* RadarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadarView.swift; sourceTree = "<group>"; };
+		80EC47E32A8C1C8A00CFCCA1 /* RoadmapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoadmapView.swift; sourceTree = "<group>"; };
+		80EC47E72A8D291400CFCCA1 /* FirstView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstView.swift; sourceTree = "<group>"; };
+		80EC47E92A8D29B400CFCCA1 /* AvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarView.swift; sourceTree = "<group>"; };
+		80EC47EB2A8D29BF00CFCCA1 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,7 +111,15 @@
 			isa = PBXGroup;
 			children = (
 				80EC47AF2A8BE6FA00CFCCA1 /* sheApp.swift */,
+				80EC47E72A8D291400CFCCA1 /* FirstView.swift */,
 				80EC47B12A8BE6FA00CFCCA1 /* ContentView.swift */,
+				80EC47E92A8D29B400CFCCA1 /* AvatarView.swift */,
+				80EC47EB2A8D29BF00CFCCA1 /* GameView.swift */,
+				80EC47DD2A8C1C5500CFCCA1 /* RitualView.swift */,
+				80EC47DF2A8C1C6200CFCCA1 /* ReflectView.swift */,
+				80EC47E12A8C1C7D00CFCCA1 /* RadarView.swift */,
+				80EC47E32A8C1C8A00CFCCA1 /* RoadmapView.swift */,
+				80EC47DB2A8C134400CFCCA1 /* GradientView.swift */,
 				80EC47B32A8BE6FB00CFCCA1 /* Assets.xcassets */,
 				80EC47B52A8BE6FB00CFCCA1 /* Preview Content */,
 			);
@@ -257,7 +281,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				80EC47DE2A8C1C5500CFCCA1 /* RitualView.swift in Sources */,
+				80EC47E22A8C1C7D00CFCCA1 /* RadarView.swift in Sources */,
+				80EC47E42A8C1C8A00CFCCA1 /* RoadmapView.swift in Sources */,
+				80EC47E02A8C1C6200CFCCA1 /* ReflectView.swift in Sources */,
+				80EC47EC2A8D29BF00CFCCA1 /* GameView.swift in Sources */,
 				80EC47B22A8BE6FA00CFCCA1 /* ContentView.swift in Sources */,
+				80EC47DC2A8C134400CFCCA1 /* GradientView.swift in Sources */,
+				80EC47E82A8D291400CFCCA1 /* FirstView.swift in Sources */,
+				80EC47EA2A8D29B400CFCCA1 /* AvatarView.swift in Sources */,
 				80EC47B02A8BE6FA00CFCCA1 /* sheApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
