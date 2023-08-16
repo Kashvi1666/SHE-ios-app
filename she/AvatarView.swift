@@ -60,6 +60,7 @@ struct AvatarView: View {
                 }
             }
             .navigationBarHidden(true)
+            .navigationBarBackButtonHidden(/*@START_MENU_TOKEN@*/true/*@END_MENU_TOKEN@*/)
         }
         .popover(isPresented: $avatarCustomizationManager.showEyeColorPicker) {
             ColorPickerPopover(colors: avatarCustomizationManager.eyeColors, selectedColor: $avatarCustomizationManager.selectedEyeColor)
@@ -71,7 +72,8 @@ struct AvatarView: View {
             ColorPickerPopover(colors: avatarCustomizationManager.skinColors, selectedColor: $avatarCustomizationManager.selectedSkinColor)
                 .onDisappear {
                     avatarCustomizationManager.applyColors()
-                }
+                    
+            }
         }
     }
 }

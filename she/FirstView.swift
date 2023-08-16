@@ -4,7 +4,8 @@ struct FirstView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                Image("background").ignoresSafeArea()
+                Image("background")
+                    .ignoresSafeArea()
                 VStack {
                     Text("S.H.E")
                         .multilineTextAlignment(.center)
@@ -32,6 +33,7 @@ struct FirstView: View {
                                     .stroke(Color.white, lineWidth: 2)
                             )
                     }
+                    .padding()
                 }
             }
         }
