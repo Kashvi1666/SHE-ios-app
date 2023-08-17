@@ -14,34 +14,45 @@ struct AvatarView: View {
                 VStack {
                     Text("Create Your Avatar")
                         .font(.title)
+                        .fontWeight(.light)
                         .foregroundColor(.white)
                         .padding(.top, 20)
-                        .offset(y: -70.0)
-
-                    HStack {
-                        ColorButton(title: "Eyes", action: {
-                            avatarCustomizationManager.showEyeColorPicker.toggle()
-                        })
-                        .padding()
-                        .offset(y: -70.0)
-
-                        ColorButton(title: "Skin", action: {
-                            avatarCustomizationManager.showSkinColorPicker.toggle()
-                        })
-                        .padding()
-                        .offset(y: -70.0)
+                        .offset(y: -78.0)
+                    ZStack {
+                        if avatarCustomizationManager.name.isEmpty {
+                            Text("name")
+                                .foregroundColor(.white)
+                                .multilineTextAlignment(.center)
+                        }
+                        TextField("", text: $avatarCustomizationManager.name)
+                            .padding(.horizontal, 10)
+                            .foregroundColor(.white)
+                            .multilineTextAlignment(.center)
+                            .accentColor(.white)
                     }
+                        .frame(width: 200.0, height: 36.0)
+                        .background(Color.black.opacity(0.4))
+                        .clipShape(Capsule())
+                        .overlay(Capsule().stroke(Color.white, lineWidth: 1))
+                        .offset(y: -70.0)
+                    HStack {
+                        ColorButton(title: "eyes", action:
+                                        {avatarCustomizationManager.showEyeColorPicker.toggle()})
+                        .padding()
+                        .offset(y: -70.0)
 
+                        ColorButton(title: "skin", action:
+                                        {avatarCustomizationManager.showSkinColorPicker.toggle()})
+                        .padding()
+                        .offset(y: -70.0)}
                     AvatarPreview(
                         skinColor: avatarCustomizationManager.skinColor,
-                        eyeColor: avatarCustomizationManager.eyeColor
-                    )
-                    .frame(width: 200, height: 200)
-
+                        eyeColor: avatarCustomizationManager.eyeColor)
+                        .frame(width: 200, height: 200)
                     Button(action: {
                         isNextButtonTapped = true
                     }) {
-                        Text("Next")
+                        Text("next")
                             .font(.headline)
                             .foregroundColor(.white)
                             .padding(.horizontal, 20)
@@ -50,11 +61,10 @@ struct AvatarView: View {
                             .clipShape(Capsule())
                             .overlay(
                                 Capsule()
-                                    .stroke(Color.white, lineWidth: 2)
-                            )
+                                    .stroke(Color.white, lineWidth: 1))
                     }
-                    .padding()
-                    .offset(y: 110.0)
+                        .padding()
+                        .offset(y: 110.0)
                     NavigationLink("", destination: ContentView(), isActive: $isNextButtonTapped)
                         .opacity(0)
                 }
@@ -72,7 +82,6 @@ struct AvatarView: View {
             ColorPickerPopover(colors: avatarCustomizationManager.skinColors, selectedColor: $avatarCustomizationManager.selectedSkinColor)
                 .onDisappear {
                     avatarCustomizationManager.applyColors()
-                    
             }
         }
     }
@@ -90,18 +99,17 @@ struct ColorPickerPopover: View {
                     }) {
                         Circle()
                             .fill(color)
-                            .frame(width: 30, height: 30)
+                            .frame(width: 60, height: 60)
                     }
                 }
             }.padding()
-        }.background(Color.black).cornerRadius(10).padding()
+        }.background(Color.white).cornerRadius(10).padding()
     }
 }
 
 struct ColorButton: View {
     let title: String
     let action: () -> Void
-
     var body: some View {
         Button(action: action) {
             Text(title)
@@ -113,12 +121,14 @@ struct ColorButton: View {
                 .clipShape(Capsule())
                 .overlay(
                     Capsule()
-                        .stroke(Color.white, lineWidth: 2)
+                        .stroke(Color.white, lineWidth: 1)
                 )
         }
     }
 }
 class AvatarCustomizationManager: ObservableObject {
+    @Published var name: String = ""
+    
     @Published var skinColor: Color = .black
     @Published var eyeColor: Color = .pink
     
