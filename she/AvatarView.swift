@@ -1,8 +1,28 @@
 import SwiftUI
 
-struct AvatarView: View {
-    @EnvironmentObject var avatarCustomizationManager: AvatarCustomizationManager
+class AvatarCustomizationManager: ObservableObject {
+    @Published var name: String = ""
+    
+    @Published var skinColor: Color = .black
+    @Published var eyeColor: Color = .pink
+    
+    @Published var selectedSkinColor: Color = .black
+    @Published var selectedEyeColor: Color = .pink
+    
+    @Published var showEyeColorPicker = false
+    @Published var showSkinColorPicker = false
+    
+    let eyeColors: [Color] = [.indigo, .orange, .brown, .gray]
+    let skinColors: [Color] = [.pink, .purple, .red, .black]
+    
+    func applyColors() {
+        skinColor = selectedSkinColor
+        eyeColor = selectedEyeColor
+    }
+}
 
+struct AvatarView: View {
+    @StateObject var avatarCustomizationManager = AvatarCustomizationManager()
     @State private var isNextButtonTapped = false
 
     var body: some View {
@@ -67,10 +87,10 @@ struct AvatarView: View {
                         .offset(y: 110.0)
                     NavigationLink("", destination: ContentView(), isActive: $isNextButtonTapped)
                         .opacity(0)
+                        .navigationBarBackButtonHidden(/*@START_MENU_TOKEN@*/true/*@END_MENU_TOKEN@*/)
                 }
             }
-            .navigationBarHidden(true)
-            .navigationBarBackButtonHidden(/*@START_MENU_TOKEN@*/true/*@END_MENU_TOKEN@*/)
+            .environmentObject(avatarCustomizationManager)
         }
         .popover(isPresented: $avatarCustomizationManager.showEyeColorPicker) {
             ColorPickerPopover(colors: avatarCustomizationManager.eyeColors, selectedColor: $avatarCustomizationManager.selectedEyeColor)
@@ -124,26 +144,6 @@ struct ColorButton: View {
                         .stroke(Color.white, lineWidth: 1)
                 )
         }
-    }
-}
-class AvatarCustomizationManager: ObservableObject {
-    @Published var name: String = ""
-    
-    @Published var skinColor: Color = .black
-    @Published var eyeColor: Color = .pink
-    
-    @Published var selectedSkinColor: Color = .black
-    @Published var selectedEyeColor: Color = .pink
-    
-    @Published var showEyeColorPicker = false
-    @Published var showSkinColorPicker = false
-    
-    let eyeColors: [Color] = [.indigo, .orange, .brown, .gray]
-    let skinColors: [Color] = [.pink, .purple, .red, .black]
-    
-    func applyColors() {
-        skinColor = selectedSkinColor
-        eyeColor = selectedEyeColor
     }
 }
 

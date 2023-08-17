@@ -2,7 +2,7 @@ import SwiftUI
 
 struct FirstView: View {
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack {
                 Image("background")
                     .ignoresSafeArea()
@@ -36,7 +36,7 @@ struct FirstView: View {
                     .padding()
                 }
             }
-        }
+        }.navigationBarBackButtonHidden(/*@START_MENU_TOKEN@*/true/*@END_MENU_TOKEN@*/)
     }
 }
 

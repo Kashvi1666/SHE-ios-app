@@ -25,7 +25,7 @@ struct ContentView: View {
                         ButtonLabel(title: "roadmap")
                     }.offset(x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: 80.0)
                 }
-            }
+            }.navigationBarBackButtonHidden(/*@START_MENU_TOKEN@*/true/*@END_MENU_TOKEN@*/)
         }
     }
 }
