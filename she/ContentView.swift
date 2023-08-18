@@ -6,8 +6,17 @@ struct ContentView: View {
     @Environment(\.managedObjectContext) var contextColor
         @FetchRequest(
                 entity: AvatarData.entity(), sortDescriptors: [ NSSortDescriptor(keyPath: \AvatarData.name, ascending: false) ])
-            
     var avatars: FetchedResults<AvatarData>
+    
+    init() {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithTransparentBackground()
+        appearance.backButtonAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.clear]
+        UINavigationBar.appearance().standardAppearance = appearance
+        UINavigationBar.appearance().tintColor = .black
+        UIBarButtonItem.appearance().tintColor = .black
+    }
+
     var body: some View {
         NavigationStack {
             ZStack {
@@ -18,7 +27,11 @@ struct ContentView: View {
                         .fontWeight(.light)
                         .foregroundColor(.black)
                         .offset(y: -10.0)
-                    AvatarPreview(skinColor: Color(avatars.first?.skin ?? ""), eyeColor: Color(avatars.first?.eyes ?? "")).offset(x: -80, y: -20)
+                    HStack{
+                        AvatarPreview(skinColor: Color(avatars.first?.skin ?? ""), eyeColor: Color(avatars.first?.eyes ?? ""), size: 100)
+                            .offset(x: -80, y: -20)
+                        Text("hi \nname").font(.largeTitle).fontWeight(.semibold).multilineTextAlignment(.leading).offset(x: /*@START_MENU_TOKEN@*/-30.0/*@END_MENU_TOKEN@*/, y: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/)
+                    }
                     NavigationLink(destination: RadarView()) {
                         ButtonLabel(title: "radar")
                     }.offset(x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: 20.0)

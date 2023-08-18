@@ -26,7 +26,6 @@
 		80EC47E42A8C1C8A00CFCCA1 /* RoadmapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EC47E32A8C1C8A00CFCCA1 /* RoadmapView.swift */; };
 		80EC47E82A8D291400CFCCA1 /* FirstView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EC47E72A8D291400CFCCA1 /* FirstView.swift */; };
 		80EC47EA2A8D29B400CFCCA1 /* AvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EC47E92A8D29B400CFCCA1 /* AvatarView.swift */; };
-		80EC47EC2A8D29BF00CFCCA1 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EC47EB2A8D29BF00CFCCA1 /* GameView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,7 +69,6 @@
 		80EC47E32A8C1C8A00CFCCA1 /* RoadmapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoadmapView.swift; sourceTree = "<group>"; };
 		80EC47E72A8D291400CFCCA1 /* FirstView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstView.swift; sourceTree = "<group>"; };
 		80EC47E92A8D29B400CFCCA1 /* AvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarView.swift; sourceTree = "<group>"; };
-		80EC47EB2A8D29BF00CFCCA1 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +96,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		803F08A32A8F2C62006AFA10 /* reflection views */ = {
+			isa = PBXGroup;
+			children = (
+				803F08A12A8F2A61006AFA10 /* ReflectionPastSurveyView.swift */,
+				803F089F2A8F29FC006AFA10 /* ReflectionArchiveView.swift */,
+				80EC47DF2A8C1C6200CFCCA1 /* ReflectView.swift */,
+				803F089D2A8F29AD006AFA10 /* ReflectionSurveyView.swift */,
+			);
+			path = "reflection views";
+			sourceTree = "<group>";
+		};
 		80EC47A32A8BE6F900CFCCA1 = {
 			isa = PBXGroup;
 			children = (
@@ -122,18 +131,14 @@
 		80EC47AE2A8BE6FA00CFCCA1 /* she */ = {
 			isa = PBXGroup;
 			children = (
-				803F089F2A8F29FC006AFA10 /* ReflectionArchiveView.swift */,
-				803F08A12A8F2A61006AFA10 /* ReflectionPastSurveyView.swift */,
+				803F08A32A8F2C62006AFA10 /* reflection views */,
 				80EC47AF2A8BE6FA00CFCCA1 /* sheApp.swift */,
 				80EC47E72A8D291400CFCCA1 /* FirstView.swift */,
 				80EC47B12A8BE6FA00CFCCA1 /* ContentView.swift */,
 				803F08982A8DEEBB006AFA10 /* CoreData.xcdatamodeld */,
 				80EC47E92A8D29B400CFCCA1 /* AvatarView.swift */,
 				803F08972A8DE8E3006AFA10 /* README.md */,
-				80EC47EB2A8D29BF00CFCCA1 /* GameView.swift */,
 				80EC47DD2A8C1C5500CFCCA1 /* RitualView.swift */,
-				80EC47DF2A8C1C6200CFCCA1 /* ReflectView.swift */,
-				803F089D2A8F29AD006AFA10 /* ReflectionSurveyView.swift */,
 				80EC47E12A8C1C7D00CFCCA1 /* RadarView.swift */,
 				80EC47E32A8C1C8A00CFCCA1 /* RoadmapView.swift */,
 				80EC47DB2A8C134400CFCCA1 /* GradientView.swift */,
@@ -306,7 +311,6 @@
 				803F089A2A8DEEBB006AFA10 /* CoreData.xcdatamodeld in Sources */,
 				80EC47E02A8C1C6200CFCCA1 /* ReflectView.swift in Sources */,
 				803F089C2A8E69AA006AFA10 /* Persistance.swift in Sources */,
-				80EC47EC2A8D29BF00CFCCA1 /* GameView.swift in Sources */,
 				80EC47B22A8BE6FA00CFCCA1 /* ContentView.swift in Sources */,
 				80EC47DC2A8C134400CFCCA1 /* GradientView.swift in Sources */,
 				80EC47E82A8D291400CFCCA1 /* FirstView.swift in Sources */,

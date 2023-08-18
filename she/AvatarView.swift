@@ -17,20 +17,15 @@ extension Color {
 
         var rgb: UInt64 = 0
         Scanner(string: hex).scanHexInt64(&rgb)
-        let red = Double((rgb & 0xFF0000) >> 16) / 255.0
-        let green = Double((rgb & 0x00FF00) >> 8) / 255.0
-        let blue = Double(rgb & 0x0000FF) / 255.0
+        let red = CGFloat((rgb & 0xFF0000) >> 16) / 255.0
+        let green = CGFloat((rgb & 0x00FF00) >> 8) / 255.0
+        let blue = CGFloat(rgb & 0x0000FF) / 255.0
 
-        self.init(red: red, green: green, blue: blue)
+        self.init(UIColor(red: red, green: green, blue: blue, alpha: 1.0))
     }
 
     var hex: String {
-        let components = self.components
-        return String(format: "#%02X%02X%02X", components.r, components.g, components.b)
-    }
-
-    var components: (r: UInt8, g: UInt8, b: UInt8) {
-        let uiColor = UIColor(cgColor: self.cgColor!)
+        let uiColor = UIColor(self)
         var red: CGFloat = 0
         var green: CGFloat = 0
         var blue: CGFloat = 0
@@ -38,7 +33,7 @@ extension Color {
         
         uiColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
         
-        return (UInt8(red * 255.0), UInt8(green * 255.0), UInt8(blue * 255.0))
+        return String(format: "#%02X%02X%02X", Int(red * 255.0), Int(green * 255.0), Int(blue * 255.0))
     }
 }
 
@@ -60,12 +55,12 @@ class AvatarCustomizationManager: ObservableObject {
     let skinColors: [Color] = [.pink, .purple, .red, .black]
     
     private var moc: NSManagedObjectContext
-
+    
     init(context: NSManagedObjectContext) {
         self.moc = context
         fetchData()
     }
-
+    
     func fetchData() {
         let request = NSFetchRequest<AvatarData>(entityName: "AvatarData")
         do {
@@ -74,24 +69,25 @@ class AvatarCustomizationManager: ObservableObject {
                 self.name = avatar.name ?? ""
                 if let skinHex = avatar.skin {
                     self.skinColor = Color(hex: skinHex)
+                    self.selectedSkinColor = Color(hex: skinHex)
                 }
                 if let eyeHex = avatar.eyes {
                     self.eyeColor = Color(hex: eyeHex)
+                    self.selectedEyeColor = Color(hex: eyeHex)
                 }
-
             }
         } catch {
             print("Error fetching data: \(error)")
         }
     }
-
+    
     func saveData() {
         let avatar = AvatarData(context: moc)
         avatar.name = self.name
         avatar.skin = self.skinColor.hex
         avatar.eyes = self.eyeColor.hex
-
-
+        
+        
         do {
             try moc.save()
         } catch {
@@ -102,7 +98,7 @@ class AvatarCustomizationManager: ObservableObject {
         skinColor = selectedSkinColor
         eyeColor = selectedEyeColor
         UserDefaults.standard.hasCompletedAvatarCustomization = true
-
+        
         let request = NSFetchRequest<AvatarData>(entityName: "AvatarData")
         let results: [AvatarData]
         do {
@@ -117,7 +113,7 @@ class AvatarCustomizationManager: ObservableObject {
         updateAvatar.skin = skinColor.hex
         updateAvatar.eyes = eyeColor.hex
         updateAvatar.name = name
-            
+        
         do {
             try contextColor.save()
         } catch {
@@ -202,7 +198,6 @@ struct AvatarView: View {
         }
         .popover(isPresented: $avatarCustomizationManager.showSkinColorPicker) {
             ColorPickerPopover(colors: avatarCustomizationManager.skinColors, selectedColor: $avatarCustomizationManager.selectedSkinColor)
-
         }
     }
 }
@@ -217,6 +212,7 @@ struct ColorPickerPopover: View {
                 ForEach(colors, id: \.self) { color in
                     Button(action: {
                         selectedColor = color
+                        UIApplication.shared.windows.first?.rootViewController?.dismiss(animated: true, completion: nil)
                     }) {
                         Circle()
                             .fill(color)
@@ -253,23 +249,24 @@ struct ColorButton: View {
 struct AvatarPreview: View {
     var skinColor: Color
     var eyeColor: Color
+    var size: CGFloat = 200
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 80)
                 .fill(skinColor)
-                .frame(width: 200, height: 200)
+                .frame(width: size, height: size)
                 .shadow(color: Color.white.opacity(0.4), radius: 14)
             Capsule()
                 .fill(skinColor)
-                .frame(width: 140, height: 200)
+                .frame(width: size * 0.7, height: size)
                 .offset(y: 90)
             RoundedRectangle(cornerRadius: 70)
                 .fill(skinColor)
-                .frame(width: 30, height: 80)
+                .frame(width: size * 0.15, height: size * 0.4)
                 .offset(x: -70, y: 120)
             RoundedRectangle(cornerRadius: 70)
                 .fill(skinColor)
-                .frame(width: 30, height: 80)
+                .frame(width: size * 0.15, height: size * 0.4)
                 .offset(x: 70, y: 120)
             Circle()
                 .fill(RadialGradient(
@@ -278,7 +275,7 @@ struct AvatarPreview: View {
                     startRadius: 0,
                     endRadius: 60
                 ))
-                .frame(width: 60, height: 60)
+                .frame(width: size * 0.3, height: size * 0.3)
                 .offset(x: -40, y: -2)
                 .overlay(Circle().stroke(Color.white, lineWidth: 0.7).offset(x: -40, y: -2))
             Circle()
@@ -288,7 +285,7 @@ struct AvatarPreview: View {
                     startRadius: 0,
                     endRadius: 60
                 ))
-                .frame(width: 60, height: 60)
+                .frame(width: size * 0.3, height: size * 0.3)
                 .offset(x: 40, y: -2)
                 .overlay(Circle().stroke(Color.white, lineWidth: 0.7).offset(x: 40, y: -2))
             Path { path in
@@ -296,7 +293,7 @@ struct AvatarPreview: View {
                 path.addQuadCurve(to: CGPoint(x: 7, y: -100), control: CGPoint(x: 20, y: -180))
             }
             .stroke(LinearGradient(gradient: Gradient(colors: [skinColor, .white, skinColor]), startPoint: .top, endPoint: .bottom), lineWidth: 14)
-            .frame(width: 40, height: 80)
+            .frame(width: size * 0.2, height: size * 0.4)
             .offset(x: 20, y: 45)
             .overlay(
                 Circle()
@@ -306,7 +303,7 @@ struct AvatarPreview: View {
                         startRadius: 0,
                         endRadius: 80
                     ))
-                    .frame(width: 40, height: 40)
+                    .frame(width: size * 0.2, height: size * 0.2)
                     .offset(x: -40, y: -140)
                     .shadow(color: Color.white.opacity(0.8), radius: 30)
                     .shadow(color: Color.white.opacity(0.8), radius: 30)

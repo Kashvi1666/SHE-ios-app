@@ -1,11 +1,13 @@
 #  notes
 
 current: 
-
-- show avatar on content view & navigate to game view (finish)
+- replace user with the name variable in all views
+- back button visuals 
+- debug avatar view preview crash 
+- show avatar & name on content view 
 - reflect view core data 
     - survey data (5 int, 1 bool, 1 string) for various dates
-    - insert new code 
+
 
 ux blueprint: 
 - reflect views (4x)
@@ -13,13 +15,17 @@ ux blueprint:
     - current survey
     - archive 
     - past survey
+    - status: DEBUG
 - ritual views (1x-9x)
     - menu (4 templates)
     - generate new view per routine with max 8 (saved in core data)
-- roadmap views (1x)
+    - status: IN PROGRESS
+- roadmap views (1x) 
     - drag and drop view (camera roll access for images)
+    - status: DONE
 - radar views (1x)
     - to-do list with popovers, timer feature  
+    - status: IN PROGRESS
 
 
 

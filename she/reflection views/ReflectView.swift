@@ -10,54 +10,41 @@ struct ReflectView: View {
                 Image("background")
                     .ignoresSafeArea()
                 VStack(spacing: 20) {
-                    Text("self-reflection")
+                    Text("user's reflections")
+                        .fontWeight(.light)
                         .font(.title)
-                        .padding(.top, -40)
-                    Text("you will have the ability to assess your mood, energy, stress, focus, and sleep.")
-                        .font(.body)
-                        .padding()
-                        .multilineTextAlignment(.center)
                     NavigationLink(
                         destination: ReflectionSurveyView(),
                         label: {
                             VStack {
                                 Rectangle()
-                                    .stroke(Color.black, lineWidth: 10)
-                                    .background(Color.white)
-                                    .frame(width: 290, height: 250)
+                                    .background(Color.black)
+                                    .frame(width: 302, height: 450)
                                     .cornerRadius(20)
                                     .overlay(
-                                        RoundedRectangle(cornerRadius: 20)
-                                            .foregroundColor(Color.init(red: 0.1, green: 0.1, blue: 0.3))
-                                    )
-                                    .overlay(
-                                        Text("august 18, 2023")
+                                        Text("august 18 \n2023")
                                             .font(.title2)
                                             .foregroundColor(Color.white)
                                     )
+                                    .offset(x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: 40.0)
                             }
                         }
                     )
                     .padding(.bottom)
-                    Text("look at your past reflections here.")
                     NavigationLink(
                         destination: ReflectionArchiveView(),
                         label: {
                             VStack {
                                 Rectangle()
-                                    .stroke(Color.black, lineWidth: 10)
-                                    .background(Color.white)
-                                    .frame(width: 250, height: 100)
+                                    .background(Color.black)
+                                    .frame(width: 300, height: 100)
                                     .cornerRadius(20)
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 20)
-                                            .foregroundColor(Color.init(red: 0.1, green: 0.1, blue: 0.3))
-                                    )
                                     .overlay(
                                         Text("archive")
                                             .font(.title2)
                                             .foregroundColor(Color.white)
-                                    )
+                            )
+                                    .offset(x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: 45.0)
                             }
                         }
                     )
