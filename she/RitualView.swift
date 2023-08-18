@@ -18,9 +18,9 @@ class TaskListManager: ObservableObject {
         if let data = UserDefaults.standard.data(forKey: "taskLists"), let savedTaskLists = try? JSONDecoder().decode([TaskList].self, from: data) {
             return savedTaskLists
         } else {
-            return [TaskList(name: "Morning", tasks: [
-                        Task(name: "Stretch", time: "8:00-8:10am"),
-                        Task(name: "Shower", time: "8:10-8:40am")
+            return [TaskList(name: "morning", tasks: [
+                        Task(name: "stretch", time: "8:00-8:10am"),
+                        Task(name: "shower", time: "8:10-8:40am")
                     ])]
         }
     }()
@@ -43,17 +43,17 @@ struct TaskRowView: View {
 
     var body: some View {
         HStack {
-            TextField("Task", text: $task.name)
+            TextField("task", text: $task.name)
                 .autocapitalization(.none)
                 .padding()
                 .cornerRadius(8)
                 .foregroundColor(.white)
                 .multilineTextAlignment(.center)
-            TextField("Time", text: $task.time)
+            TextField("time", text: $task.time)
                 .autocapitalization(.none)
                 .padding()
                 .cornerRadius(8)
-                .foregroundColor(.white)
+                .foregroundColor(.black)
                 .multilineTextAlignment(.center)
         }
         .padding()
@@ -67,17 +67,20 @@ struct TaskListRowView: View {
     @Binding var taskList: TaskList
 
     var body: some View {
-        TextField("Ritual", text: $taskList.name)
+        TextField("ritual", text: $taskList.name)
             .autocapitalization(.none)
+            .frame(width: 340.0, height: 20.0)
             .font(.title2)
             .padding()
-            .background(Color.white.opacity(0.1))
+            .background(Color.black.opacity(0.3))
             .cornerRadius(8)
-            .foregroundColor(.white)
+            .foregroundColor(.black)
             .overlay(RoundedRectangle(cornerRadius: 8)
                         .stroke(Color.black.opacity(0.4), lineWidth: 1))
+            .zIndex(1)
     }
 }
+
 
 struct TaskListView: View {
     @Binding var tasks: [Task]
@@ -89,11 +92,11 @@ struct TaskListView: View {
             }
 
             Button(action: addTask) {
-                Text("Add Task")
+                Text("create")
                     .foregroundColor(.white)
                     .background(Color.black)
                     .cornerRadius(8)
-                    .padding(.all, 20.0)
+                    .padding(.all, 200.0)
             }
             .frame(width: 600.0, height: 45.0)
         }
@@ -124,7 +127,7 @@ struct RitualView: View {
                     ScrollView {
                         VStack(spacing: 20) {
                             ForEach(manager.taskLists.indices, id: \.self) { index in
-                                VStack {
+                                VStack(spacing: 10) {
                                     TaskListRowView(taskList: $manager.taskLists[index])
                                         .onTapGesture {
                                             withAnimation {
@@ -135,11 +138,11 @@ struct RitualView: View {
                                                 }
                                             }
                                         }
+
                                     if expandedSection == manager.taskLists[index].id {
                                         TaskListView(tasks: $manager.taskLists[index].tasks)
-                                            .transition(.move(edge: .top))
                                     }
-                                }
+                                }.animation(.default)
                             }
                         }
                         .padding(.horizontal)
@@ -155,15 +158,17 @@ struct RitualView: View {
     var addButton: some View {
         Button(action: {
             if manager.taskLists.count < 8 {
-                manager.taskLists.append(TaskList(name: "Ritual", tasks: []))
+                manager.taskLists.append(TaskList(name: "ritual", tasks: []))
                 expandedSection = manager.taskLists.last?.id
             }
         }) {
             Image(systemName: "plus")
                 .foregroundColor(.white)
                 .padding()
+                .frame(width: 40.0, height: 40.0)
                 .background(Color.black.opacity(0.5))
                 .clipShape(Circle())
+                .offset(x: /*@START_MENU_TOKEN@*/-8.0/*@END_MENU_TOKEN@*/, y: /*@START_MENU_TOKEN@*/20.0/*@END_MENU_TOKEN@*/)
         }
     }
 }
