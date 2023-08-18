@@ -1,7 +1,13 @@
 import SwiftUI
 import Foundation
+import CoreData
 
 struct ContentView: View {
+    @Environment(\.managedObjectContext) var contextColor
+        @FetchRequest(
+                entity: AvatarData.entity(), sortDescriptors: [ NSSortDescriptor(keyPath: \AvatarData.name, ascending: false) ])
+            
+    var avatars: FetchedResults<AvatarData>
     var body: some View {
         NavigationStack {
             ZStack {
@@ -11,19 +17,20 @@ struct ContentView: View {
                         .font(.largeTitle)
                         .fontWeight(.light)
                         .foregroundColor(.black)
-                        .offset(y: -110.0)
+                        .offset(y: -10.0)
+                    AvatarPreview(skinColor: Color(avatars.first?.skin ?? ""), eyeColor: Color(avatars.first?.eyes ?? "")).offset(x: -80, y: -20)
                     NavigationLink(destination: RadarView()) {
                         ButtonLabel(title: "radar")
-                    }.offset(x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: 80.0)
+                    }.offset(x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: 20.0)
                     NavigationLink(destination: RitualView()) {
                         ButtonLabel(title: "ritual")
-                    }.offset(x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: 80.0)
+                    }.offset(x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: 20.0)
                     NavigationLink(destination: ReflectView()) {
                         ButtonLabel(title: "reflect")
-                    }.offset(x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: 80.0)
+                    }.offset(x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: 20.0)
                     NavigationLink(destination: RoadmapView()) {
                         ButtonLabel(title: "roadmap")
-                    }.offset(x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: 80.0)
+                    }.offset(x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: 20.0)
                 }
             }.navigationBarBackButtonHidden(/*@START_MENU_TOKEN@*/true/*@END_MENU_TOKEN@*/)
         }
@@ -52,5 +59,17 @@ struct ButtonLabel: View {
                     .stroke(Color.white, lineWidth: 1)
                     
             ).shadow(color: Color.black.opacity(0.4), radius: 20)
+    }
+}
+
+struct RootView: View {
+    var body: some View {
+        Group {
+            if UserDefaults.standard.hasCompletedAvatarCustomization {
+                ContentView()
+            } else {
+                FirstView()
+            }
+        }
     }
 }

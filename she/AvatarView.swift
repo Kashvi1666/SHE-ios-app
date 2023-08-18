@@ -1,4 +1,46 @@
 import SwiftUI
+import CoreData
+import UIKit
+
+extension UserDefaults {
+    var hasCompletedAvatarCustomization: Bool {
+        get { return bool(forKey: "HasCompletedAvatarCustomization") }
+        set { setValue(newValue, forKey: "HasCompletedAvatarCustomization") }
+    }
+}
+
+extension Color {
+    init(hex: String) {
+        let hexSanitized = hex.trimmingCharacters(in: .whitespacesAndNewlines)
+        let hexSanitizedUppercased = hexSanitized.uppercased()
+        let hex = hexSanitizedUppercased.starts(with: "#") ? String(hexSanitizedUppercased.dropFirst()) : hexSanitizedUppercased
+
+        var rgb: UInt64 = 0
+        Scanner(string: hex).scanHexInt64(&rgb)
+        let red = Double((rgb & 0xFF0000) >> 16) / 255.0
+        let green = Double((rgb & 0x00FF00) >> 8) / 255.0
+        let blue = Double(rgb & 0x0000FF) / 255.0
+
+        self.init(red: red, green: green, blue: blue)
+    }
+
+    var hex: String {
+        let components = self.components
+        return String(format: "#%02X%02X%02X", components.r, components.g, components.b)
+    }
+
+    var components: (r: UInt8, g: UInt8, b: UInt8) {
+        let uiColor = UIColor(cgColor: self.cgColor!)
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        var alpha: CGFloat = 0
+        
+        uiColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+        
+        return (UInt8(red * 255.0), UInt8(green * 255.0), UInt8(blue * 255.0))
+    }
+}
 
 class AvatarCustomizationManager: ObservableObject {
     @Published var name: String = ""
@@ -12,21 +54,83 @@ class AvatarCustomizationManager: ObservableObject {
     @Published var showEyeColorPicker = false
     @Published var showSkinColorPicker = false
     
+    @Environment(\.managedObjectContext) var contextColor
+    
     let eyeColors: [Color] = [.indigo, .orange, .brown, .gray]
     let skinColors: [Color] = [.pink, .purple, .red, .black]
     
+    private var moc: NSManagedObjectContext
+
+    init(context: NSManagedObjectContext) {
+        self.moc = context
+        fetchData()
+    }
+
+    func fetchData() {
+        let request = NSFetchRequest<AvatarData>(entityName: "AvatarData")
+        do {
+            let results = try moc.fetch(request)
+            if let avatar = results.first {
+                self.name = avatar.name ?? ""
+                if let skinHex = avatar.skin {
+                    self.skinColor = Color(hex: skinHex)
+                }
+                if let eyeHex = avatar.eyes {
+                    self.eyeColor = Color(hex: eyeHex)
+                }
+
+            }
+        } catch {
+            print("Error fetching data: \(error)")
+        }
+    }
+
+    func saveData() {
+        let avatar = AvatarData(context: moc)
+        avatar.name = self.name
+        avatar.skin = self.skinColor.hex
+        avatar.eyes = self.eyeColor.hex
+
+
+        do {
+            try moc.save()
+        } catch {
+            print("Error saving data: \(error)")
+        }
+    }
     func applyColors() {
         skinColor = selectedSkinColor
         eyeColor = selectedEyeColor
+        UserDefaults.standard.hasCompletedAvatarCustomization = true
+
+        let request = NSFetchRequest<AvatarData>(entityName: "AvatarData")
+        let results: [AvatarData]
+        do {
+            results = try contextColor.fetch(request)
+        } catch {
+            print(error)
+            return
+        }
+        
+        let updateAvatar = results.isEmpty ? AvatarData(context: contextColor) : results[0]
+        
+        updateAvatar.skin = skinColor.hex
+        updateAvatar.eyes = eyeColor.hex
+        updateAvatar.name = name
+            
+        do {
+            try contextColor.save()
+        } catch {
+            print(error)
+        }
     }
 }
 
 struct AvatarView: View {
-    @StateObject var avatarCustomizationManager = AvatarCustomizationManager()
+    @StateObject var avatarCustomizationManager = AvatarCustomizationManager(context: PersistenceController.shared.container.viewContext)
     @State private var isNextButtonTapped = false
-
     var body: some View {
-        NavigationStack {
+        NavigationView {
             ZStack {
                 Image("background")
                     .ignoresSafeArea()
@@ -70,6 +174,7 @@ struct AvatarView: View {
                         eyeColor: avatarCustomizationManager.eyeColor)
                         .frame(width: 200, height: 200)
                     Button(action: {
+                        avatarCustomizationManager.applyColors()
                         isNextButtonTapped = true
                     }) {
                         Text("next")
@@ -94,18 +199,14 @@ struct AvatarView: View {
         }
         .popover(isPresented: $avatarCustomizationManager.showEyeColorPicker) {
             ColorPickerPopover(colors: avatarCustomizationManager.eyeColors, selectedColor: $avatarCustomizationManager.selectedEyeColor)
-                .onDisappear {
-                    avatarCustomizationManager.applyColors()
-                }
         }
         .popover(isPresented: $avatarCustomizationManager.showSkinColorPicker) {
             ColorPickerPopover(colors: avatarCustomizationManager.skinColors, selectedColor: $avatarCustomizationManager.selectedSkinColor)
-                .onDisappear {
-                    avatarCustomizationManager.applyColors()
-            }
+
         }
     }
 }
+
 
 struct ColorPickerPopover: View {
     let colors: [Color]
@@ -150,8 +251,8 @@ struct ColorButton: View {
 
 //avatar build
 struct AvatarPreview: View {
-    let skinColor: Color
-    let eyeColor: Color
+    var skinColor: Color
+    var eyeColor: Color
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 80)
@@ -179,6 +280,7 @@ struct AvatarPreview: View {
                 ))
                 .frame(width: 60, height: 60)
                 .offset(x: -40, y: -2)
+                .overlay(Circle().stroke(Color.white, lineWidth: 0.7).offset(x: -40, y: -2))
             Circle()
                 .fill(RadialGradient(
                     gradient: Gradient(colors: [eyeColor, skinColor]),
@@ -188,6 +290,7 @@ struct AvatarPreview: View {
                 ))
                 .frame(width: 60, height: 60)
                 .offset(x: 40, y: -2)
+                .overlay(Circle().stroke(Color.white, lineWidth: 0.7).offset(x: 40, y: -2))
             Path { path in
                 path.move(to: CGPoint(x: -50, y: -140))
                 path.addQuadCurve(to: CGPoint(x: 7, y: -100), control: CGPoint(x: 20, y: -180))
@@ -217,6 +320,6 @@ struct AvatarPreview: View {
 struct AvatarView_Previews: PreviewProvider {
     static var previews: some View {
         AvatarView()
-            .environmentObject(AvatarCustomizationManager())
+            .environmentObject(AvatarCustomizationManager(context: PersistenceController.shared.container.viewContext))
     }
 }
