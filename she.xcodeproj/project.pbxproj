@@ -101,8 +101,6 @@
 		80EC47A32A8BE6F900CFCCA1 = {
 			isa = PBXGroup;
 			children = (
-				803F089F2A8F29FC006AFA10 /* ReflectionArchiveView.swift */,
-				803F08A12A8F2A61006AFA10 /* ReflectionPastSurveyView.swift */,
 				803F089B2A8E69AA006AFA10 /* Persistance.swift */,
 				80EC47AE2A8BE6FA00CFCCA1 /* she */,
 				80EC47BF2A8BE6FB00CFCCA1 /* sheTests */,
@@ -124,6 +122,8 @@
 		80EC47AE2A8BE6FA00CFCCA1 /* she */ = {
 			isa = PBXGroup;
 			children = (
+				803F089F2A8F29FC006AFA10 /* ReflectionArchiveView.swift */,
+				803F08A12A8F2A61006AFA10 /* ReflectionPastSurveyView.swift */,
 				80EC47AF2A8BE6FA00CFCCA1 /* sheApp.swift */,
 				80EC47E72A8D291400CFCCA1 /* FirstView.swift */,
 				80EC47B12A8BE6FA00CFCCA1 /* ContentView.swift */,
