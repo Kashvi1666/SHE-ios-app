@@ -36,20 +36,14 @@ extension Color {
         return String(format: "#%02X%02X%02X", Int(red * 255.0), Int(green * 255.0), Int(blue * 255.0))
     }
 }
-
 class AvatarCustomizationManager: ObservableObject {
     @Published var name: String = ""
-    
     @Published var skinColor: Color = .black
     @Published var eyeColor: Color = .pink
-    
     @Published var selectedSkinColor: Color = .black
     @Published var selectedEyeColor: Color = .pink
-    
     @Published var showEyeColorPicker = false
     @Published var showSkinColorPicker = false
-    
-    @Environment(\.managedObjectContext) var contextColor
     
     let eyeColors: [Color] = [.indigo, .orange, .brown, .gray]
     let skinColors: [Color] = [.pink, .purple, .red, .black]
@@ -66,14 +60,16 @@ class AvatarCustomizationManager: ObservableObject {
         do {
             let results = try moc.fetch(request)
             if let avatar = results.first {
-                self.name = avatar.name ?? ""
-                if let skinHex = avatar.skin {
-                    self.skinColor = Color(hex: skinHex)
-                    self.selectedSkinColor = Color(hex: skinHex)
-                }
-                if let eyeHex = avatar.eyes {
-                    self.eyeColor = Color(hex: eyeHex)
-                    self.selectedEyeColor = Color(hex: eyeHex)
+                DispatchQueue.main.async {
+                    self.name = avatar.name ?? ""
+                    if let skinHex = avatar.skin {
+                        self.skinColor = Color(hex: skinHex)
+                        self.selectedSkinColor = Color(hex: skinHex)
+                    }
+                    if let eyeHex = avatar.eyes {
+                        self.eyeColor = Color(hex: eyeHex)
+                        self.selectedEyeColor = Color(hex: eyeHex)
+                    }
                 }
             }
         } catch {
@@ -102,20 +98,20 @@ class AvatarCustomizationManager: ObservableObject {
         let request = NSFetchRequest<AvatarData>(entityName: "AvatarData")
         let results: [AvatarData]
         do {
-            results = try contextColor.fetch(request)
+            results = try moc.fetch(request)  // Changed contextColor to moc here
         } catch {
             print(error)
             return
         }
         
-        let updateAvatar = results.isEmpty ? AvatarData(context: contextColor) : results[0]
+        let updateAvatar = results.isEmpty ? AvatarData(context: moc) : results[0]  // And here
         
         updateAvatar.skin = skinColor.hex
         updateAvatar.eyes = eyeColor.hex
         updateAvatar.name = name
         
         do {
-            try contextColor.save()
+            try moc.save()  // And here too
         } catch {
             print(error)
         }
@@ -149,6 +145,7 @@ struct AvatarView: View {
                             .foregroundColor(.white)
                             .multilineTextAlignment(.center)
                             .accentColor(.white)
+                            .autocapitalization(.none)
                     }
                         .frame(width: 200.0, height: 36.0)
                         .background(Color.black.opacity(0.4))
@@ -165,9 +162,8 @@ struct AvatarView: View {
                                         {avatarCustomizationManager.showSkinColorPicker.toggle()})
                         .padding()
                         .offset(y: -70.0)}
-                    AvatarPreview(
-                        skinColor: avatarCustomizationManager.skinColor,
-                        eyeColor: avatarCustomizationManager.eyeColor)
+                    AvatarPreview(skinColor: avatarCustomizationManager.selectedSkinColor,
+                                  eyeColor: avatarCustomizationManager.selectedEyeColor)
                         .frame(width: 200, height: 200)
                     Button(action: {
                         avatarCustomizationManager.applyColors()
@@ -202,8 +198,8 @@ struct AvatarView: View {
     }
 }
 
-
 struct ColorPickerPopover: View {
+    @EnvironmentObject var avatarCustomizationManager: AvatarCustomizationManager
     let colors: [Color]
     @Binding var selectedColor: Color
     var body: some View {
@@ -221,8 +217,10 @@ struct ColorPickerPopover: View {
                 }
             }.padding()
         }.background(Color.white).cornerRadius(10).padding()
+        
     }
 }
+
 
 struct ColorButton: View {
     let title: String
@@ -249,6 +247,7 @@ struct ColorButton: View {
 struct AvatarPreview: View {
     var skinColor: Color
     var eyeColor: Color
+    @EnvironmentObject var avatarCustomizationManager: AvatarCustomizationManager
     var size: CGFloat = 200
     var body: some View {
         ZStack {

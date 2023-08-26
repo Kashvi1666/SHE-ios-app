@@ -60,6 +60,7 @@ struct TaskRowView: View {
         .frame(width: 380.0, height: 40.0)
         .background(Color.black.opacity(0.2))
         .cornerRadius(20)
+        .contentShape(Rectangle())
     }
 }
 
@@ -78,6 +79,7 @@ struct TaskListRowView: View {
             .overlay(RoundedRectangle(cornerRadius: 8)
                         .stroke(Color.black.opacity(0.4), lineWidth: 1))
             .zIndex(1)
+            .contentShape(Rectangle())
     }
 }
 
@@ -99,11 +101,14 @@ struct TaskListView: View {
                     .padding(.all, 200.0)
             }
             .frame(width: 600.0, height: 45.0)
+            .contentShape(Rectangle())
         }
     }
 
     func addTask() {
-        tasks.append(Task(name: "", time: ""))
+        if tasks.count < 8 {
+            tasks.append(Task(name: "", time: ""))
+        }
     }
 }
 
@@ -119,7 +124,7 @@ struct RitualView: View {
                     .blur(radius: 4.0)
 
                 VStack {
-                    Text("User's Rituals")
+                    Text("user's rituals")
                         .fontWeight(.light)
                         .font(.title)
                         .padding(.top, 50)
@@ -152,6 +157,8 @@ struct RitualView: View {
                 }
             }
             .navigationBarItems(trailing: addButton)
+            .navigationBarTitle("", displayMode: .inline)
+            .navigationBarHidden(true)
         }
     }
 
@@ -168,7 +175,7 @@ struct RitualView: View {
                 .frame(width: 40.0, height: 40.0)
                 .background(Color.black.opacity(0.5))
                 .clipShape(Circle())
-                .offset(x: /*@START_MENU_TOKEN@*/-8.0/*@END_MENU_TOKEN@*/, y: /*@START_MENU_TOKEN@*/20.0/*@END_MENU_TOKEN@*/)
+                .offset(x: /*@START_MENU_TOKEN@*/-8.0/*@END_MENU_TOKEN@*/, y: 0)
         }
     }
 }

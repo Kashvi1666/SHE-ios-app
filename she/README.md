@@ -8,7 +8,18 @@ current:
 - reflect view core data 
     - survey data (5 int, 1 bool, 1 string) for various dates
 
+concepts: 
+- apple watch breathe out & in visual
+- chatbot avatar 
+- increased gamification 
+- app guide 
 
+view architecture: 
+- first view -> avatar view -> content view  
+                                -> ritual view 
+                                -> reflect view
+                                -> radar view 
+                                -> roadmap view 
 ux blueprint: 
 - reflect views (4x)
     - menu 
