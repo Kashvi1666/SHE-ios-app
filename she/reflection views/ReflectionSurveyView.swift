@@ -12,10 +12,10 @@ struct ReflectionSurveyView: View {
         ZStack {
             Image("background").ignoresSafeArea()
             ScrollView {
-                VStack(spacing: 15) {  // Reduced spacing
+                VStack(spacing: 15) {  
                     Text("august 18, 2023")
-                        .font(.caption)   // Reduced font size
-                        .padding([.top, .bottom], 8)  // Adjusted padding
+                        .font(.caption)   
+                        .padding([.top, .bottom], 8)  
                     
                     RatingSlider(value: $moodRating, title: "mood")
                     RatingSlider(value: $energyRating, title: "energy")
@@ -24,7 +24,7 @@ struct ReflectionSurveyView: View {
                     RatingSlider(value: $sleepRating, title: "sleep")
                     
                     Text("cycle")
-                        .font(.caption)  // Reduced font size
+                        .font(.caption)  
                         .multilineTextAlignment(.center)
                     
                     Toggle("", isOn: $isCycling)
@@ -32,16 +32,16 @@ struct ReflectionSurveyView: View {
                         .padding(.bottom, 8)
                     
                     Text("journal")
-                        .font(.caption)  // Reduced font size
+                        .font(.caption)  
                         .multilineTextAlignment(.center)
                     
                     TextEditor(text: $journalText)
-                        .frame(height: 80)  // Reduced height
-                        .padding(8)         // Adjusted padding
+                        .frame(height: 80)  
+                        .padding(8)         
                         .background(Color.init(red: 0.1, green: 0.1, blue: 0.3))
                     
                 }
-                .padding([.leading, .trailing], 8)  // Adjusted horizontal padding
+                .padding([.leading, .trailing], 8)  
             }
         }
     }
